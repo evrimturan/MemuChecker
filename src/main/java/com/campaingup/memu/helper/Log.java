@@ -22,6 +22,7 @@ public class Log {
         deviceDetails.clear();
         //System.out.println(deviceDetails);
         String filePath = System.getProperty("user.dir") + "/src" + "/Devices.txt";
+        //System.out.println(filePath);
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
