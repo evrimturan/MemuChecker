@@ -1,4 +1,4 @@
-package com.campaingup.memu.object;
+package com.campaingup.memu.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
