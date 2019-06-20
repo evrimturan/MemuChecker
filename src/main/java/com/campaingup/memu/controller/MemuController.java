@@ -43,16 +43,21 @@ public class MemuController {
 
 
         System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
-        //System.out.println(deviceguid + " " + time);
 
         Log.createLog(guid, time);
 
-        if(deviceRepository.existsById(device.getId())) {
-            Device entry = deviceRepository.findById(device.getId()).get();
-            entry.setTime(time);
-            deviceRepository.save(entry);
+
+        Boolean inRepo = false;
+        Iterable<Device> deviceList= deviceRepository.findAll();
+        for(Device entry : deviceList) {
+            if(guid.equals(entry.getGuid())) {
+                entry.setTime(time);
+                deviceRepository.save(entry);
+                return entry;
+            }
         }
-        else {
+
+        if(!inRepo) {
             deviceRepository.save(device);
         }
 
