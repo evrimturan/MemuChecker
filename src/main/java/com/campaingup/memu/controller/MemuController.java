@@ -65,5 +65,27 @@ public class MemuController {
         return device;
     }
 
+    @PostMapping(value = "/monitoring", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String monitoringPostResponseController(
+            @RequestBody Device device) {
+
+        String guid = device.getGuid();
+
+        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+
+        Iterable<Device> deviceList = deviceRepository.findAll();
+        for(Device query: deviceList) {
+            if(guid.equals(query.getGuid())) {
+                return query.getTime();
+            }
+
+        }
+
+        return "0";
+
+    }
+
 }
 
