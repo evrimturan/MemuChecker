@@ -1,6 +1,7 @@
 package com.campaingup.memu.controller;
 import com.campaingup.memu.helper.Log;
 import com.campaingup.memu.entity.Device;
+import com.campaingup.memu.service.MemuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import com.campaingup.memu.repository.DeviceRepository;
 public class MemuController {
 
     @Autowired
-    private DeviceRepository deviceRepository;
+    private MemuService memuService;
 
     @GetMapping(value="/get")
     @ResponseBody
@@ -37,32 +38,7 @@ public class MemuController {
     public Device testPostResponseController(
             @RequestBody Device device) {
 
-        String guid = device.getGuid();
-        String time = device.getTime();
-
-
-        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
-
-        Log.createLog(guid, time);
-
-
-        Boolean inRepo = false;
-        Iterable<Device> deviceList= deviceRepository.findAll();
-        for(Device entry : deviceList) {
-            if(guid.equals(entry.getGuid())) {
-                entry.setTime(time);
-                deviceRepository.save(entry);
-                return entry;
-            }
-        }
-
-        if(!inRepo) {
-            deviceRepository.save(device);
-        }
-
-
-        //return new String("Thanks for posting on test " + device.getGuid());
-        return device;
+        return memuService.create(device);
     }
 
     @PostMapping(value = "/monitoring", consumes = "application/json", produces = "application/json")
@@ -71,19 +47,7 @@ public class MemuController {
     public String monitoringPostResponseController(
             @RequestBody Device device) {
 
-        String guid = device.getGuid();
-
-        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
-
-        Iterable<Device> deviceList = deviceRepository.findAll();
-        for(Device query: deviceList) {
-            if(guid.equals(query.getGuid())) {
-                return query.getTime();
-            }
-
-        }
-
-        return "0";
+        return memuService.read(device);
 
     }
 
