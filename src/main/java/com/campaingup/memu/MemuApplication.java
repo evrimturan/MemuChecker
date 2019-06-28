@@ -9,6 +9,5 @@ public class MemuApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MemuApplication.class, args);
 	}
-
 }
 
