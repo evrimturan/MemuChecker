@@ -1,0 +1,27 @@
+version: '3.5'
+networks:
+  memu-network:
+    name: memu-network
+    driver: bridge
+services:
+  database:
+    networks:
+      - memu-network
+    container_name: memu-mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: campaignup
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    image: mysql:latest
+  java:
+    networks:
+      - memu-network
+    container_name: memu-spring
+    ports:
+      - 8080:8080
+    image: evrimturan/memu:latest
+    links:
+      -  "database"
