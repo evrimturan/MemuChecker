@@ -17,12 +17,9 @@ public class Log {
 
         ArrayList<String> deviceDetails = new ArrayList<>();
         Boolean inDevices = false;
-        //long timeInMillis = Calendar.getInstance().getTimeInMillis();
         long timeInMillis = Long.parseLong(time);
         deviceDetails.clear();
-        //System.out.println(deviceDetails);
         String filePath = System.getProperty("user.dir") + "/src" + "/Devices.txt";
-        //System.out.println(filePath);
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -60,7 +57,6 @@ public class Log {
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
         }
     }
 }
