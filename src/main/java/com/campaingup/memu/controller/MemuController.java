@@ -3,11 +3,14 @@ import com.campaingup.memu.helper.Log;
 import com.campaingup.memu.entity.Device;
 import com.campaingup.memu.service.MemuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.campaingup.memu.repository.DeviceRepository;
+
+import java.util.List;
 
 
 @Controller
@@ -21,6 +24,16 @@ public class MemuController {
     public String getResponseController(@RequestParam("name") String name) {
 
         return new String("Thanks for getting " + name);
+    }
+
+    @GetMapping(value="/pages")
+    @ResponseBody
+    public List<Device> pageResponseController(@RequestParam("number") String number, @RequestParam("size") String size) {
+
+        int pageNumber = Integer.parseInt(number);
+        int pageSize = Integer.parseInt(size);
+
+        return memuService.getPage(pageNumber, pageSize);
     }
 
 

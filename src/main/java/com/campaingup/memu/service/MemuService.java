@@ -5,8 +5,14 @@ import com.campaingup.memu.entity.Device;
 import com.campaingup.memu.helper.Log;
 import com.campaingup.memu.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 
 @Service
 public class MemuService {
@@ -30,6 +36,8 @@ public class MemuService {
             return entry;
         }
 
+        return device;
+
 
         //System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
 
@@ -48,19 +56,17 @@ public class MemuService {
 
         if(!inRepo) {
             deviceRepository.save(device);
-        }*/
+        }
 
 
-        //return new String("Thanks for posting on test " + device.getGuid());
-        return device;
+        return new String("Thanks for posting on test " + device.getGuid());
+        return device;*/
     }
 
 
     @Transactional
     public String read(Device device) {
         String guid = device.getGuid();
-
-        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
 
         Device entry = deviceRepository.findByGuid(guid);
 
@@ -70,7 +76,10 @@ public class MemuService {
 
         return entry.getTime();
 
-        /*Iterable<Device> deviceList = deviceRepository.findAll();
+
+        /*System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+
+        Iterable<Device> deviceList = deviceRepository.findAll();
         for(Device query: deviceList) {
             if(guid.equals(query.getGuid())) {
                 return query.getTime();
@@ -86,7 +95,7 @@ public class MemuService {
 
         String guid = device.getGuid();
 
-        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+        //System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
 
         if(guid.equals("DeleteAll")) {
             deviceRepository.deleteAll();
@@ -102,6 +111,15 @@ public class MemuService {
         deviceRepository.deleteByGuid(guid);
         return entry.getGuid();
 
+    }
+
+    public List<Device> getPage(int pageNumber, int pageSize) {
+
+        Pageable pagable = PageRequest.of(pageNumber, pageSize);
+
+        Page<Device> page = deviceRepository.findAll(pagable);
+
+        return page.getContent();
     }
 
 
