@@ -51,5 +51,16 @@ public class MemuController {
 
     }
 
+    @PostMapping(value = "/delete", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String deletePostResponseController(
+            @RequestBody Device device) {
+
+        return memuService.delete(device);
+
+    }
+
+
 }
 

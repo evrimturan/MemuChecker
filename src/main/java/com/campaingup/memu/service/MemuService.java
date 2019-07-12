@@ -19,13 +19,24 @@ public class MemuService {
         String guid = device.getGuid();
         String time = device.getTime();
 
+        Device entry = deviceRepository.findByGuid(guid);
 
-        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+        if(entry == null) {
+            deviceRepository.save(device);
+        }
+        else {
+            entry.setTime(time);
+            deviceRepository.save(entry);
+            return entry;
+        }
 
-        Log.createLog(guid, time);
+
+        //System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+
+        //Log.createLog(guid, time);
 
 
-        Boolean inRepo = false;
+        /*Boolean inRepo = false;
         Iterable<Device> deviceList= deviceRepository.findAll();
         for(Device entry : deviceList) {
             if(guid.equals(entry.getGuid())) {
@@ -37,7 +48,7 @@ public class MemuService {
 
         if(!inRepo) {
             deviceRepository.save(device);
-        }
+        }*/
 
 
         //return new String("Thanks for posting on test " + device.getGuid());
@@ -51,7 +62,15 @@ public class MemuService {
 
         System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
 
-        Iterable<Device> deviceList = deviceRepository.findAll();
+        Device entry = deviceRepository.findByGuid(guid);
+
+        if(entry == null){
+            return "0";
+        }
+
+        return entry.getTime();
+
+        /*Iterable<Device> deviceList = deviceRepository.findAll();
         for(Device query: deviceList) {
             if(guid.equals(query.getGuid())) {
                 return query.getTime();
@@ -59,7 +78,31 @@ public class MemuService {
 
         }
 
-        return "0";
+        return "0";*/
     }
+
+    @Transactional
+    public String delete(Device device) {
+
+        String guid = device.getGuid();
+
+        System.out.println(device.getId() + " " + device.getGuid() + " " + device.getTime());
+
+        if(guid.equals("DeleteAll")) {
+            deviceRepository.deleteAll();
+            return "1";
+        }
+
+        Device entry = deviceRepository.findByGuid(guid);
+
+        if(entry == null) {
+            return "0";
+        }
+
+        deviceRepository.deleteByGuid(guid);
+        return entry.getGuid();
+
+    }
+
 
 }
